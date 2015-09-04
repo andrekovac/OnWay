@@ -5,12 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-class POIRecycler extends RecyclerView.Adapter<POIViewHolder> {
+class POIAdapter extends RecyclerView.Adapter<POIViewHolder> {
 
     private final MainActivity mainActivity;
     private final POIProvider poiProvider;
 
-    public POIRecycler(final MainActivity mainActivity, final POIProvider poiProvider) {
+    public POIAdapter(final MainActivity mainActivity, final POIProvider poiProvider) {
         this.mainActivity = mainActivity;
         this.poiProvider = poiProvider;
     }

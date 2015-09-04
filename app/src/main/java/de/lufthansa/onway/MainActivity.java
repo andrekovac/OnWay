@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         toContent.setText("Gate 3");
 
-        recyclerView.setAdapter(new POIRecycler(this,poiProvider));
+        recyclerView.setAdapter(new POIAdapter(this,poiProvider));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
