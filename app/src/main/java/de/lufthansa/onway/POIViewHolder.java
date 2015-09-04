@@ -12,7 +12,6 @@ class POIViewHolder extends RecyclerView.ViewHolder {
     @Bind(R.id.name)
     TextView name;
 
-
     @Bind(R.id.distance)
     TextView distance;
 
@@ -24,7 +23,7 @@ class POIViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, rootView);
     }
 
-    public void bind(POI poi) {
+    public void bind(DistanceAwarePOI poi) {
         name.setText(poi.getName());
         icon.setImageResource(poi.getIconRes());
         distance.setText(String.format("%dm", poi.getDistanceInMeters()));
