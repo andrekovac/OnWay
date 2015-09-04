@@ -11,8 +11,6 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.content_list)
     RecyclerView recyclerView;
 
-    List<POI> poiList;
+    private POIProvider poiProvider;
 
     @OnClick(R.id.fab)
     void onFABClick() {
@@ -33,18 +31,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        poiList = new ArrayList<>();
-
-        poiList.add(new POI("Toilet", 5, R.drawable.ic_action_bus));
-        poiList.add(new POI("Food", 10, R.drawable.ic_action_bus));
-
+        poiProvider=new POIProvider();
 
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
         toContent.setText("Gate 3");
 
-        recyclerView.setAdapter(new POIRecycler(this));
+        recyclerView.setAdapter(new POIRecycler(this,poiProvider));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 

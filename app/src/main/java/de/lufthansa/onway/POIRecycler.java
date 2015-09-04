@@ -7,10 +7,12 @@ import android.view.ViewGroup;
 
 class POIRecycler extends RecyclerView.Adapter<POIViewHolder> {
 
-    private MainActivity mainActivity;
+    private final MainActivity mainActivity;
+    private final POIProvider poiProvider;
 
-    public POIRecycler(final MainActivity mainActivity) {
+    public POIRecycler(final MainActivity mainActivity, final POIProvider poiProvider) {
         this.mainActivity = mainActivity;
+        this.poiProvider = poiProvider;
     }
 
     @Override
@@ -21,11 +23,11 @@ class POIRecycler extends RecyclerView.Adapter<POIViewHolder> {
 
     @Override
     public void onBindViewHolder(final POIViewHolder holder, final int position) {
-        holder.bind(mainActivity.poiList.get(position));
+        holder.bind(poiProvider.getPOIsOnWay().get(position));
     }
 
     @Override
     public int getItemCount() {
-        return mainActivity.poiList.size();
+        return poiProvider.getPOIsOnWay().size();
     }
 }
