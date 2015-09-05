@@ -17,6 +17,7 @@ import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconConsumer;
 import org.altbeacon.beacon.BeaconManager;
 import org.altbeacon.beacon.BeaconParser;
+import org.altbeacon.beacon.Identifier;
 import org.altbeacon.beacon.RangeNotifier;
 import org.altbeacon.beacon.Region;
 import static org.altbeacon.beacon.BeaconManager.getInstanceForApplication;
@@ -57,9 +58,9 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
         beaconManager = getInstanceForApplication(getApplicationContext());
         //beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=????,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"));
         beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:8-9=0215,i:10-13,i:14-15,i:16-17,i:18-25,p:24-24"));
+        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"));
         beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"));
         beaconManager.bind(this);
-
     }
 
     @Override
@@ -92,6 +93,8 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
             @Override
             public void didRangeBeaconsInRegion(final Collection<Beacon> collection, final Region region) {
                 Log.i(TAG, "beacons in range");
+                //collection.iterator().next().getId1().
+                final Identifier id1 = collection.iterator().next().getId1();
             }
         });
 
