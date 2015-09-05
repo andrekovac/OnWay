@@ -22,11 +22,12 @@ android {
 dependencies {
     compile 'com.android.support:appcompat-v7:23.0.0'
     compile 'com.jakewharton:butterknife:7.0.1'
-
     compile 'com.android.support:support-annotations:23.0.0'
     compile 'com.android.support:support-v4:23.0.0'
     compile 'com.android.support:recyclerview-v7:23.0.0'
     compile 'com.android.support:appcompat-v7:23.0.0'
     compile 'com.android.support:cardview-v7:23.0.0'
     compile 'com.android.support:design:23.0.0'
+    compile files('/Users/andrekovac/Documents/coding/App_development/AndroidStudioProjects/OnWay/libs/bitplaces-android-sdk.jar')
+    compile files('/Users/andrekovac/Documents/coding/App_development/AndroidStudioProjects/OnWay/libs/slf4j-api-1.7.1.jar')
 }

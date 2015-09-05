@@ -4,6 +4,19 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
+    // Add for bitplaces API
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION"/>
+
+    <permission android:name="de.lufthansa.onway.permission.C2D_MESSAGE" android:protectionLevel="signature"/>
+    <uses-permission android:name="de.lufthansa.onway.permission.C2D_MESSAGE"/>
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,6 +31,37 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        /* Bitplaces */
+        <service android:name="com.bitplaces.sdk.android.BitplacesService" />
+        <service android:name="com.bitplaces.sdk.android.BitplacesGCMIntentService"/>
+        <service android:enabled="true"
+            android:exported="false"
+            android:isolatedProcess="false"
+            android:label="iBeacon"
+            android:name="com.radiusnetworks.ibeacon.service.IBeaconService">
+        </service>
+        <service android:enabled="true"
+            android:name="com.radiusnetworks.ibeacon.IBeaconIntentProcessor">
+            <meta-data android:name="background" android:value="true" />
+            <intent-filter android:priority="1" >
+                <action android:name="de.lufthansa.onway.DID_RANGING" />
+                <action android:name="de.lufthansa.onway.DID_MONITORING" />
+            </intent-filter>
+        </service>
+
+        <receiver android:name="com.bitplaces.sdk.android.BootCompletedReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.bitplaces.sdk.android.BitplacesGCMBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+                <category android:name="de.lufthansa.onway"/>
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
