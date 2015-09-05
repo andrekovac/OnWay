@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
+              android:layout_height="wrap_content"
               android:paddingLeft="@dimen/activity_horizontal_margin"
               android:paddingRight="@dimen/activity_horizontal_margin"
               android:paddingTop="@dimen/activity_vertical_margin"
@@ -15,7 +15,7 @@
     <TextView
             android:layout_width="0dip"
             android:layout_weight="1"
-            android:textSize="16sp"
+            android:textSize="12sp"
             android:id="@+id/name"
             android:gravity="center_vertical"
             android:fontFamily="sans-serif"
@@ -23,7 +23,7 @@
 
     <TextView
             android:layout_width="wrap_content"
-            android:textSize="16sp"
+            android:textSize="12sp"
             android:id="@+id/distance"
             android:textStyle="bold"
             android:gravity="center_vertical"

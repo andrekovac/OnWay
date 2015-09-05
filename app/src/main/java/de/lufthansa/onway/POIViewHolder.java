@@ -26,6 +26,6 @@ class POIViewHolder extends RecyclerView.ViewHolder {
     public void bind(DistanceAwarePOI poi) {
         name.setText(poi.getName());
         icon.setImageResource(poi.getIconRes());
-        distance.setText(String.format("%dm", poi.getDistanceInMeters()));
+        distance.setText(String.format("%dm", (int)poi.getDistanceInMeters()*10));
     }
 }

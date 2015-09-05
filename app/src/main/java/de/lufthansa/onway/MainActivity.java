@@ -1,7 +1,7 @@
 package de.lufthansa.onway;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,12 +12,13 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconConsumer;
 import org.altbeacon.beacon.BeaconManager;
 import org.altbeacon.beacon.BeaconParser;
-import org.altbeacon.beacon.Identifier;
 import org.altbeacon.beacon.RangeNotifier;
 import org.altbeacon.beacon.Region;
 import static org.altbeacon.beacon.BeaconManager.getInstanceForApplication;
@@ -35,10 +36,16 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
     private POIProvider poiProvider;
 
     private BeaconManager beaconManager;
+    private POIAdapter adapter;
+
+    private List<DistanceAwarePOI> tempList = new ArrayList<>();
+
+    private DistanceAwarePOI closestPOI;
 
     @OnClick(R.id.fab)
     void onFABClick() {
-        new AlertDialog.Builder(this).setMessage("test").show();
+        poiProvider.setPoisOnWay(tempList);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -52,14 +59,14 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
 
         toContent.setText("Gate 3");
 
-        recyclerView.setAdapter(new POIAdapter(this, poiProvider));
+        adapter = new POIAdapter(this, poiProvider);
+
+        recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         beaconManager = getInstanceForApplication(getApplicationContext());
-        //beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=????,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"));
-        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:8-9=0215,i:10-13,i:14-15,i:16-17,i:18-25,p:24-24"));
         beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"));
-        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"));
+
         beaconManager.bind(this);
     }
 
@@ -93,10 +100,44 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
             @Override
             public void didRangeBeaconsInRegion(final Collection<Beacon> collection, final Region region) {
                 Log.i(TAG, "beacons in range");
-                //collection.iterator().next().getId1().
-                final Identifier id1 = collection.iterator().next().getId1();
+
+                List<DistanceAwarePOI> pois = new ArrayList<>();
+
+                DistanceAwarePOI tmpClosestPOI = null;
+
+                for (final Beacon beacon : collection) {
+
+                    final DistanceAwarePOI poi = new DistanceAwarePOI(beacon.getBluetoothAddress(),
+                                                                      beacon.getDistance(),
+                                                                      R.drawable.ic_action_bus,
+                                                                      beacon.getBluetoothAddress().replace(":", ""));
+                    //   pois.add(poi);
+
+                    if (tmpClosestPOI == null || beacon.getDistance() < tmpClosestPOI.getDistanceInMeters()) {
+                        tmpClosestPOI = poi;
+                    }
+                }
+
+                if (tmpClosestPOI != null) {
+                    pois.add(tmpClosestPOI);
+                }
+
+                tempList = pois;
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        onFABClick();
+                    }
+                });
             }
         });
+
+        try {
+            beaconManager.startRangingBeaconsInRegion(new Region("foo", null, null, null));
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
 
     }
 }

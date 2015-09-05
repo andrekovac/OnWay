@@ -1,17 +1,15 @@
 package de.lufthansa.onway;
 
-import java.util.UUID;
-
 public class DistanceAwarePOI extends POI {
-    private final int distanceInMeters;
+    private final double distanceInMeters;
 
 
-    public DistanceAwarePOI(final String name, final int distanceInMeters, final int iconRes) {
-        super(name, iconRes, UUID.randomUUID(),UUID.randomUUID());
+    public DistanceAwarePOI(final String name, final double distanceInMeters, final int iconRes, String mac) {
+        super(name, iconRes, mac);
         this.distanceInMeters = distanceInMeters;
     }
 
-    public int getDistanceInMeters() {
+    public double getDistanceInMeters() {
         return distanceInMeters;
     }
 
