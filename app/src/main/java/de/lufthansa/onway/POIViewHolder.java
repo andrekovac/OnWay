@@ -1,6 +1,10 @@
 package de.lufthansa.onway;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,6 +22,9 @@ class POIViewHolder extends RecyclerView.ViewHolder {
     @Bind(R.id.icon)
     ImageView icon;
 
+    @Bind(R.id.photo)
+    ImageView photo;
+
     public POIViewHolder(final View rootView) {
         super(rootView);
         ButterKnife.bind(this, rootView);
@@ -26,6 +33,14 @@ class POIViewHolder extends RecyclerView.ViewHolder {
     public void bind(DistanceAwarePOI poi) {
         name.setText(poi.getName());
         icon.setImageResource(poi.getIconRes());
-        distance.setText(String.format("%dm", (int)poi.getDistanceInMeters()*10));
+        distance.setText(String.format("%dm", (int) poi.getDistanceInMeters() * 10));
+        final Context context = photo.getContext();
+
+        final Bitmap bitmap = BitmapFactory.decodeFile("/sdcard/beaconpark/foo.jpg");
+
+        Log.i("", " bitmapfoo " + bitmap.getWidth());
+
+        photo.setImageBitmap(bitmap);
+        photo.setAdjustViewBounds(true);
     }
 }
