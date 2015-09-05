@@ -36,11 +36,12 @@ class POIViewHolder extends RecyclerView.ViewHolder {
         distance.setText(String.format("%dm", (int) poi.getDistanceInMeters() * 10));
         final Context context = photo.getContext();
 
-        final Bitmap bitmap = BitmapFactory.decodeFile("/sdcard/beaconpark/foo.jpg");
+        final Bitmap bitmap = BitmapFactory.decodeFile("/sdcard/beaconpark/" + poi.getMac() + "_0.jpg");
 
-        Log.i("", " bitmapfoo " + bitmap.getWidth());
-
-        photo.setImageBitmap(bitmap);
-        photo.setAdjustViewBounds(true);
+        if (bitmap != null) {
+            Log.i("", " bitmapfoo " + bitmap.getWidth());
+            photo.setImageBitmap(bitmap);
+            photo.setAdjustViewBounds(true);
+        }
     }
 }

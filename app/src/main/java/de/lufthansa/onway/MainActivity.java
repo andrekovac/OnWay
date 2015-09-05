@@ -38,14 +38,12 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
     private BeaconManager beaconManager;
     private POIAdapter adapter;
 
-    private List<DistanceAwarePOI> tempList = new ArrayList<>();
-
-    private DistanceAwarePOI closestPOI;
+    private int currentIndex = 0;
 
     @OnClick(R.id.fab)
     void onFABClick() {
-        poiProvider.setPoisOnWay(tempList);
-        adapter.notifyDataSetChanged();
+        /*poiProvider.setPoisOnWay(tempList);
+        adapter.notifyDataSetChanged();*/
     }
 
     @Override
@@ -57,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        toContent.setText("Gate 3");
+        toContent.setText("Coffee");
 
         adapter = new POIAdapter(this, poiProvider);
 
@@ -114,22 +112,31 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
                     //   pois.add(poi);
 
                     if (tmpClosestPOI == null || beacon.getDistance() < tmpClosestPOI.getDistanceInMeters()) {
-                        tmpClosestPOI = poi;
+                        if (poiProvider.getIndexForMac(poi.getMac().replace(":", "")) > 0) {
+                            tmpClosestPOI = poi;
+                        } else {
+                            Log.i("", "indexForMac for unknown" + poi.getMac());
+                        }
+                    } else {
+
                     }
                 }
 
                 if (tmpClosestPOI != null) {
-                    pois.add(tmpClosestPOI);
-                }
+                    final String mac = tmpClosestPOI.getMac().replace(":", "");
+                    final int indexForMac = poiProvider.getIndexForMac(mac);
+                    Log.i("", "indexForMac " + indexForMac + " " + mac);
+                    if (indexForMac > currentIndex) {
+                        currentIndex = indexForMac;
 
-                tempList = pois;
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        onFABClick();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                recyclerView.smoothScrollToPosition(currentIndex);
+                            }
+                        });
                     }
-                });
+                }
             }
         });
 
